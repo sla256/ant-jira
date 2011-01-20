@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+
+<project name="ant-jira test1"  default="runtest" basedir=".">
+
+<path id="antjira.classpath">
+    <fileset dir="../lib">
+        <include name="*.jar"/>
+    </fileset>
+    <fileset dir="../dist">
+        <include name="ant-jira.jar"/>
+    </fileset>
+</path>
+
+
+<taskdef name="antjira" classname="org.sla256.antjira.AntJiraTask" classpathref="antjira.classpath"/>
+
+<target name="runtest">
+    <antjira username="ant-jira-test" password="111111" webServiceEndpointUrl="http://sandbox.onjira.com/rpc/soap/jirasoapservice-v2"/>
+</target>
+
+</project>

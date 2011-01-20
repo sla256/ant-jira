@@ -43,19 +43,16 @@ public class AntJiraTask extends Task {
 	        jssLocator.setJirasoapserviceV2EndpointAddress(webServiceEndpointUrl);
 	        JiraSoapService jss = jssLocator.getJirasoapserviceV2();
 	        
-	        log(username);
-	        log(password);
-	        
 	        String loginResponse = jss.login(username, password);
-/*	        
+
 	        if( loginResponse == null ) {
 	        	log("Login failed.", 1);
 	        	throw new RuntimeException("Login failed");
 	        }
-	*/        	
-	        //long issueCount = jss.getIssueCountForFilter(loginResponse, "10461");
-	        
-	        //log("Issue count " + issueCount);
+
+	        long issueCount = jss.getIssueCountForFilter(loginResponse, "10021");
+
+	        log("Issue count " + issueCount);
         }
         catch(ServiceException e)
         {

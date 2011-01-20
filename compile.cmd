@@ -1,0 +1,1 @@
+javac -d bin -classpath lib\ant.jar;lib\axis-ant.jar;lib\axis.jar;lib\commons-discovery-0.2.jar;lib\commons-logging-1.0.4.jar;lib\jaxrpc.jar;lib\log4j-1.2.8.jar;lib\saaj.jar;lib\wsdl4j-1.5.1.jar; -sourcepath src .\src\org\sla256\antjira\AntJiraTask.java
