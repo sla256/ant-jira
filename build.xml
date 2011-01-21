@@ -33,6 +33,7 @@
 	<echo message="Building jar file..." />
     <jar destfile="${dist.dir}/ant-jira.jar">
         <fileset dir="${bin.dir}" />
+    	<fileset file="antjira.tasks" />
     </jar>
 </target>
 

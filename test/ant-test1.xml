@@ -11,11 +11,14 @@
     </fileset>
 </path>
 
-
-<taskdef name="antjira" classname="org.sla256.antjira.AntJiraTask" classpathref="antjira.classpath"/>
-
+<taskdef resource="antjira.tasks" classpathref="antjira.classpath"/>
+ 
 <target name="runtest">
-    <antjira username="ant-jira-test" password="111111" webServiceEndpointUrl="http://sandbox.onjira.com/rpc/soap/jirasoapservice-v2"/>
+    <antjira username="ant-jira-test" password="111111" webServiceEndpointUrl="http://sandbox.onjira.com/rpc/soap/jirasoapservice-v2">
+        <filtercount filterID="10021" filterCountProperty="jira.test.filter.count" />
+    </antjira>
+    
+    <echo>Result of the filter count call: ${jira.test.filter.count}</echo>
 </target>
 
 </project>
