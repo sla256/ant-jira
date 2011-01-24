@@ -23,7 +23,7 @@ import org.sla256.antjira.jirasoapservice.JiraSoapServiceServiceLocator;
  * }
  * </pre>
  */
-public class AntJiraTask extends Task {
+public class AntJiraTask extends AntJiraAbstractTask {
 	
 	/**
 	 * Internal collection of filter count tasks.
@@ -40,11 +40,7 @@ public class AntJiraTask extends Task {
 	 */
 	private String password;
 	
-	/**
-	 * Jira SOAP web service endpoint URL. 
-	 */
-	private String webServiceEndpointUrl;
-	
+
 	/**
 	 * Sets Jira username.
 	 * @param username
@@ -76,23 +72,31 @@ public class AntJiraTask extends Task {
 	public void execute() {
         try
         {
+        	trace("Running AntJiraTask.execute()");
+        	
 	        JiraSoapServiceServiceLocator jssLocator = new JiraSoapServiceServiceLocator();
 	        
 	        jssLocator.setJirasoapserviceV2EndpointAddress(webServiceEndpointUrl);
 	        JiraSoapService jss = jssLocator.getJirasoapserviceV2();
-	        
-	        String loginResponse = jss.login(username, password);
 
-	        if( loginResponse == null ) {
+	        trace("Obtained Jira SOAP WS handle, calling login");
+
+	        jiraLoginResponse = jss.login(username, password);
+
+	        if( jiraLoginResponse == null ) {
 	        	log("Login failed.", 1);
 	        	throw new BuildException("Login failed");
 	        }
 
+	        trace("Logged in, calling " + filterCountTasks.size() + " filter count task(s)");
+
 	        for(AntJiraFilterCountTask fcTask : filterCountTasks) {
-	        	fcTask.setJiraLoginResponse(loginResponse);
+	        	fcTask.setJiraLoginResponse(jiraLoginResponse);
 	        	fcTask.setWebServiceEndpointUrl(webServiceEndpointUrl);
 	        	fcTask.perform();
 	        }
+	        
+	        trace("Finished AntJiraTask.execute()");
         }
         catch(Exception e)
         {

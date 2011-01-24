@@ -19,22 +19,8 @@ import org.sla256.antjira.jirasoapservice.JiraSoapServiceServiceLocator;
  * }
  * </pre>
  */
-public class AntJiraFilterCountTask extends Task {
+public class AntJiraFilterCountTask extends AntJiraAbstractTask {
 
-	/**
-	 * Represents an authentication token returned by Jira on login. Passed on from the initial login
-	 * performed by the main Jira task.
-	 * This is an internally set property (not through the property of the task in the build file
-	 * but by the parent main task AntJira. 
-	 */
-	private String jiraLoginResponse;
-	
-	/**
-	 * This is an internally set property (not through the property of the task in the build file
-	 * but by the parent main task AntJira. 
-	 */
-	private String webServiceEndpointUrl;
-	
 	/**
 	 * Represents Jira filter ID which this task will call and set the returned count in the defined property.
 	 * This is a traditional ant task property which we want to be set in the build file.
@@ -52,15 +38,8 @@ public class AntJiraFilterCountTask extends Task {
 	 * @param webServiceEndpointUrl
 	 */
 	void setWebServiceEndpointUrl(String webServiceEndpointUrl) {
+		trace("Setting ws end point URL to " + webServiceEndpointUrl);
 		this.webServiceEndpointUrl = webServiceEndpointUrl;
-	}
-	
-	/**
-	 * Note this setter can only be called from this package, 
-	 * @param jiraLoginResponse
-	 */
-	void setJiraLoginResponse(String jiraLoginResponse) {
-		this.jiraLoginResponse = jiraLoginResponse;
 	}
 	
 	/**
@@ -68,6 +47,7 @@ public class AntJiraFilterCountTask extends Task {
 	 * @param filterID
 	 */
 	public void setFilterID(String filterID) {
+		trace("Setting filter ID to " + filterID);
 		this.filterID = filterID;
 	}
 	
@@ -76,6 +56,7 @@ public class AntJiraFilterCountTask extends Task {
 	 * @param filterCountProperty
 	 */
 	public void setFilterCountProperty(String filterCountProperty) {
+		trace("Setting filter count property name to " + filterCountProperty);
 		this.filterCountProperty = filterCountProperty;
 	}
 	
@@ -86,14 +67,22 @@ public class AntJiraFilterCountTask extends Task {
 	public void execute() {
         try
         {
+        	trace("Running AntJiraFilterCountTask.execute()");
+        	
 	        JiraSoapServiceServiceLocator jssLocator = new JiraSoapServiceServiceLocator();
 	        
 	        jssLocator.setJirasoapserviceV2EndpointAddress(webServiceEndpointUrl);
 	        JiraSoapService jss = jssLocator.getJirasoapserviceV2();
 	        
+	        trace("Obtained Jira SOAP WS handle, calling filter count");
+	        
 	        long issueCount = jss.getIssueCountForFilter(jiraLoginResponse, filterID);
 
+	        trace("Got filter count at " + issueCount + ", setting property");
+
 	        getProject().setProperty(filterCountProperty, String.valueOf(issueCount));
+	        
+	        trace("Finished AntJiraFilterCountTask.execute()");
         }
         catch(Exception e)
         {
