@@ -109,7 +109,7 @@ public class AntJiraTask extends AntJiraAbstractTask {
 	 * Allows nested ant tasks of AntJiraFilterCountTask type.
 	 * @param filterCountTask
 	 */
-	public void add(AntJiraFilterCountTask filterCountTask) {
+	public void addFilterCount(AntJiraFilterCountTask filterCountTask) {
 		filterCountTasks.add(filterCountTask);
 	}
 }
