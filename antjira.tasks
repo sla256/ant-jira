@@ -1,2 +1,3 @@
 antjira=org.sla256.antjira.AntJiraTask
 filtercount=org.sla256.antjira.AntJiraFilterCountTask
+createissue=org.sla256.antjira.AntJiraCreateIssueTask

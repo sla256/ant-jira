@@ -31,6 +31,11 @@ public class AntJiraTask extends AntJiraAbstractTask {
 	private List<AntJiraFilterCountTask> filterCountTasks = new ArrayList<AntJiraFilterCountTask>();
 	
 	/**
+	 * Internal collection of create issue tasks.
+	 */
+	private List<AntJiraCreateIssueTask> createIssueTasks = new ArrayList<AntJiraCreateIssueTask>();
+	
+	/**
 	 * Jira username.
 	 */
 	private String username;
@@ -95,6 +100,14 @@ public class AntJiraTask extends AntJiraAbstractTask {
 	        	fcTask.setWebServiceEndpointUrl(webServiceEndpointUrl);
 	        	fcTask.perform();
 	        }
+
+	        trace("Logged in, calling " + createIssueTasks.size() + " create issue task(s)");
+
+	        for(AntJiraCreateIssueTask ciTask : createIssueTasks) {
+	        	ciTask.setJiraLoginResponse(jiraLoginResponse);
+	        	ciTask.setWebServiceEndpointUrl(webServiceEndpointUrl);
+	        	ciTask.perform();
+	        }
 	        
 	        trace("Finished AntJiraTask.execute()");
         }
@@ -111,5 +124,13 @@ public class AntJiraTask extends AntJiraAbstractTask {
 	 */
 	public void addFilterCount(AntJiraFilterCountTask filterCountTask) {
 		filterCountTasks.add(filterCountTask);
+	}
+	
+	/**
+	 * Allows nested ant tasks of AntJiraCreateIssueTask type.
+	 * @param createIssueTask
+	 */
+	public void addCreateIssue(AntJiraCreateIssueTask createIssueTask) {
+		createIssueTasks.add(createIssueTask);
 	}
 }
