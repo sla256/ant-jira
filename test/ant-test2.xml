@@ -14,8 +14,16 @@
 <taskdef resource="antjira.tasks" classpathref="antjira.classpath"/>
  
 <target name="runtest">
+	<tstamp/>
     <antjira verbose="true" username="ant-jira-test" password="111111" webServiceEndpointUrl="http://sandbox.onjira.com/rpc/soap/jirasoapservice-v2">
-        <createissue verbose="true" summary="ant-jira-test1" type="1" project="TST" />
+        <createissue 
+    		verbose="true" 
+			summary="ant-jira-test ${DSTAMP} ${TSTAMP}" 
+			type="1"
+        	project="TST"
+			description="ant-jira automated test issue description"
+        	assignee="ant-jira-test"
+        	priority="4"/>
     </antjira>
 </target>
 

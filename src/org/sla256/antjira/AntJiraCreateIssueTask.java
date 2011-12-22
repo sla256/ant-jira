@@ -33,10 +33,22 @@ public class AntJiraCreateIssueTask extends AntJiraAbstractTask {
 	private String project;
 
 	/**
-	 * Represents Jira issue type.
+	 * Represents Jira issue type (Jira expects a number).
 	 */
 	private String type;
 	
+    private String assignee;
+
+    private String description;
+
+    private String priority;
+
+    private String reporter;
+
+    private String resolution;
+
+    private String status;
+
 	/**
 	 * Note this setter can only be called from this package, i.e. we don't want it to be set from the 
 	 * build file. This ensures the endpoint is defined only once at the parent task level.
@@ -66,12 +78,36 @@ public class AntJiraCreateIssueTask extends AntJiraAbstractTask {
 	}
 	
 	/**
-	 * Represents Jira issue type.
+	 * Represents Jira issue type (Jira expects a number).
 	 * @param type
 	 */
 	public void setType(String type) {
 		trace("Setting type to " + type);
 		this.type = type;
+	}
+	
+	public void setAssignee(String assignee) {
+		this.assignee = assignee;
+	}
+	
+	public void setDescription(String description) {
+		this.description = description;
+	}
+	
+	public void setPriority(String priority) {
+		this.priority = priority;
+	}
+	
+	public void setReporter(String reporter) {
+		this.reporter = reporter;
+	}
+	
+	public void setResolution(String resolution) {
+		this.resolution = resolution;
+	}
+	
+	public void setStatus(String status) {
+		this.status = status;
 	}
 	
 	/**
@@ -97,10 +133,16 @@ public class AntJiraCreateIssueTask extends AntJiraAbstractTask {
 	        newIssue.setSummary(summary);
 	        newIssue.setProject(project);
 	        newIssue.setType(type);
+	        newIssue.setAssignee(assignee);
+	        newIssue.setDescription(description);
+	        newIssue.setPriority(priority);
+	        newIssue.setReporter(reporter);
+	        newIssue.setResolution(resolution);
+	        newIssue.setStatus(status);
 	        
 	        RemoteIssue createdIssue = jss.createIssue(jiraLoginResponse, newIssue);
 
-	        trace("Got new issue with " + createdIssue.getKey() + "");
+	        trace("Got new issue with key " + createdIssue.getKey());
 
 	        // getProject().setProperty(filterCountProperty, String.valueOf(issueCount));
 	        
